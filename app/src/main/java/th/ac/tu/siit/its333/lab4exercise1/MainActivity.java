@@ -39,7 +39,7 @@ public class MainActivity extends ActionBarActivity {
         switch(id) {
             case R.id.btAdd:
                 i = new Intent(this, AddCourseActivity.class);
-                startActivityForResult(i, 88);
+                startActivityForResult(i, 411);
                 break;
 
             case R.id.btShow:
@@ -55,12 +55,21 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 88) {
+        if (requestCode == 411) {
             if (resultCode == RESULT_OK) {
                 String code = data.getStringExtra("code");
                 int credit = data.getIntExtra("credit", 0);
                 String grade = data.getStringExtra("grade");
 
+                CourseDBHelper helper = new CourseDBHelper(this);
+                SQLiteDatabase db = helper.getReadableDatabase();
+                ContentValues r = new ContentValues();
+
+                r.put("code", code);
+                r.put("credit", credit);
+                r.put("grade", grade);
+                r.put("value",gradeToValue(grade.toString()));
+                long new_id = db.insert("todo", null, r);
             }
         }
 
